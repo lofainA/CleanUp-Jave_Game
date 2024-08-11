@@ -1,7 +1,11 @@
 package tile;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -15,55 +19,83 @@ public class TileManager {
 	GamePanel gp;
 	public Tile[] tile; //array to store diff types of tiles
 	public int mapTileNum[][]; //map data will be stored here
+	boolean generateMap = true;
+	//MapGenerator mg = new MapGenerator();
 	
 	public TileManager(GamePanel gp) {
 		
 		this.gp = gp;
-		tile = new Tile[10]; //change if need to add more than 10 types of tile sprites
-		
+		tile = new Tile[100]; //change if need to add more than 100 types of tiles
+
 		mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
 		getTileImage();
-		loadMap("map02.txt");
+		loadMap("/maps/WorldMap #1");
+
 	}
 
 	public void getTileImage() {
-		
+
+		setup(0, "1 grass", false);
+		setup(1, "brickwall", true);
+		setup(2, "Bush", false);
+		setup(3, "Dirt", false);
+		setup(4, "grass var", false);
+		setup(5, "mud", false);
+		setup(6, "path var", false);
+		setup(7, "path-grass bottom-left-corner", false);
+		setup(8, "path-grass bottom-left", false);
+		setup(9, "path-grass bottom-right-corner", false);
+		setup(10, "path-grass bottom-right", false);
+		setup(11, "path-grass bottom", false);
+		setup(12, "path-grass left", false);	
+		setup(13, "path-grass right", false);	
+		setup(14, "path-grass top-left-corner", false);	
+		setup(15, "path-grass top-left", false);	
+		setup(16, "path-grass top-right-corner", false);	
+		setup(17, "path-grass top-right", false);	
+		setup(18, "path-grass top", false);	
+		setup(19, "path", false);	
+		setup(20, "Sand", false);
+		setup(21, "stonewall", true);	
+		setup(22, "Tree", true);
+		setup(23, "water var", true);	
+		setup(24, "water-grass bottom-left-corner", true);	
+		setup(25, "water-grass bottom-left", true);	
+		setup(26, "water-grass bottom-right-corner", true);	
+		setup(27, "water-grass bottom-right", true);	
+		setup(28, "water-grass bottom", true);	
+		setup(29, "water-grass left", true);	
+		setup(30, "water-grass right", true);	
+		setup(31, "water-grass top-left-corner", true);	
+		setup(32, "water-grass top-left", true);	
+		setup(33, "water-grass top-right-corner", true);	
+		setup(34, "water-grass top-right", true);	
+		setup(35, "water-grass top", true);	
+		setup(36, "water", true);
+		setup(37, "yellow house (1)", true);
+		setup(38, "yellow house (10)", false);
+		setup(39, "yellow house (11)", false);
+		setup(40, "yellow house (12)", false);
+		setup(41, "yellow house (2)", true);
+		setup(42, "yellow house (3)", true);
+		setup(43, "yellow house (4)", true);
+		setup(44, "yellow house (5)", true);
+		setup(45, "yellow house (6)", true);
+		setup(46, "yellow house (7)", true);
+		setup(47, "yellow house (8)", true);
+		setup(48, "yellow house (9)", true);	
+	}
+
+	public void setup(int count, String name, boolean collision) {
 		try {
-			 tile[0] = new Tile();
-			 tile[0].image = ImageIO.read(getClass().getResourceAsStream("/tiles/Grass.png"));
-			 
-			 tile[1] = new Tile();
-			 tile[1].image = ImageIO.read(getClass().getResourceAsStream("/tiles/Wall.png"));
-			 tile[1].collision = true;
-			 
-			 tile[2] = new Tile();
-			 tile[2].image = ImageIO.read(getClass().getResourceAsStream("/tiles/Water.png"));
-			 tile[2].collision = true;
-
-			 tile[3] = new Tile();
-			 tile[3].image = ImageIO.read(getClass().getResourceAsStream("/tiles/Tree.png"));
-			 tile[3].collision = true;
-
-			 tile[4] = new Tile();
-			 tile[4].image = ImageIO.read(getClass().getResourceAsStream("/tiles/Bush.png"));
-			 
-			 tile[5] = new Tile();
-			 tile[5].image = ImageIO.read(getClass().getResourceAsStream("/tiles/Sand.png"));
-			 
-			 tile[6] = new Tile();
-			 tile[6].image = ImageIO.read(getClass().getResourceAsStream("/tiles/Dirt.png"));
-			 
-			 tile[7] = new Tile();
-			 tile[7].image = ImageIO.read(getClass().getResourceAsStream("/tiles/Grass Dirt Trans Up.png"));
-			 
-			 tile[8] = new Tile();
-			 tile[8].image = ImageIO.read(getClass().getResourceAsStream("/tiles/Grass Dirt Trans Down.png"));
-			
-			
-		} catch(IOException e1) {
+			tile[count] = new Tile();
+			tile[count].image = ImageIO.read(getClass().getResourceAsStream("/tiles/" + name +".png"));
+			tile[count].collision = collision;
+		} 
+		
+		catch(IOException e1) {
 			e1.printStackTrace();
 		}
-		
 	}
 	
 	public void loadMap(String file) {

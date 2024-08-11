@@ -8,6 +8,8 @@ public class KeyHandler implements KeyListener{
 	public boolean upPressed, downPressed, leftPressed, rightPressed;
 	//public boolean upStill, downStill, leftStill, rightStill;
 
+	public boolean interact;
+
 	@Override
 	public void keyTyped(KeyEvent e) {
 		
@@ -19,28 +21,29 @@ public class KeyHandler implements KeyListener{
 		int code = e.getKeyCode();
 		
 		if (code == KeyEvent.VK_W) {
-			
 			upPressed = true;
 			//upStill =  false;
 		}
 		
 		if (code == KeyEvent.VK_S) {
-			
 			downPressed = true;
 			//downStill = false;
 		}
 		
 		if (code == KeyEvent.VK_A) {
-			
 			leftPressed = true;
 			//leftStill = false;
 		
 		}
 		
 		if (code == KeyEvent.VK_D) {
-			
 			rightPressed = true;
 			//rightStill =  false;
+		}
+
+		// Object Interaction
+		if(code == KeyEvent.VK_F) {
+			interact = true;
 		}
 	}
 
@@ -49,29 +52,30 @@ public class KeyHandler implements KeyListener{
 
 		int code = e.getKeyCode();
 		
-		if (code == KeyEvent.VK_W) {
-			
+		// Character movement
+		if(code == KeyEvent.VK_W) {
 			upPressed = false;
 			//upStill = true;
 		}
 		
-		if (code == KeyEvent.VK_S) {
-			
+		if(code == KeyEvent.VK_S) {
 			downPressed = false;
 			//downStill = true;
 		}
 		
-		if (code == KeyEvent.VK_A) {
-			
+		if(code == KeyEvent.VK_A) {
 			leftPressed = false;
 			//leftStill = true;
 		
 		}
-		
-		if (code == KeyEvent.VK_D) {
-			
+		if(code == KeyEvent.VK_D) {
 			rightPressed = false;
 			//rightStill = true;
+		}
+
+		// Object Interaction
+		if(code == KeyEvent.VK_F) {
+			interact = false;
 		}
 		
 	}

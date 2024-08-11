@@ -18,6 +18,8 @@ public class Player extends Entity{
 
 	public final int screenX;
 	public final int screenY;
+
+	int hasKey = 0;
 	
 	public Player(GamePanel gp, KeyHandler keyH) {
 		
@@ -30,6 +32,8 @@ public class Player extends Entity{
 		hitBox = new Rectangle();
 		hitBox.x = 12;
 		hitBox.y = 33;
+		hitBoxDefaultX = hitBox.x;
+		hitBoxDefaultY = hitBox.y;
 		hitBox.width = 24;
 		hitBox.height = 15;
 
@@ -48,7 +52,7 @@ public class Player extends Entity{
 		
 		try {
 			
-			front1 = ImageIO.read(getClass().getResourceAsStream("/player/Guy_frony_walk_1.png"));
+			front1 = ImageIO.read(getClass().getResourceAsStream("/player/Guy_front_walk_1.png"));
 			front2 = ImageIO.read(getClass().getResourceAsStream("/player/Guy_front_walk_2.png"));
 			
 			back1 = ImageIO.read(getClass().getResourceAsStream("/player/Guy_back_walk_1.png"));
@@ -60,17 +64,17 @@ public class Player extends Entity{
 			left1 = ImageIO.read(getClass().getResourceAsStream("/player/Guy_left_walk_1.png"));
 			left2 = ImageIO.read(getClass().getResourceAsStream("/player/Guy_left_walk_2.png"));
 			
-			sFront1 = ImageIO.read(getClass().getResourceAsStream("/player/Guy_front _still_1.png"));
-			sFront2 = ImageIO.read(getClass().getResourceAsStream("/player/Guy_front_still_2.png"));
+			// sFront1 = ImageIO.read(getClass().getResourceAsStream("/player/Guy_front _still_1.png"));
+			// sFront2 = ImageIO.read(getClass().getResourceAsStream("/player/Guy_front_still_2.png"));
 			
-			sBack1 = ImageIO.read(getClass().getResourceAsStream("/player/Guy_back_still_1.png"));
-			sBack2 = ImageIO.read(getClass().getResourceAsStream("/player/Guy_back_still_2.png"));
+			// sBack1 = ImageIO.read(getClass().getResourceAsStream("/player/Guy_back_still_1.png"));
+			// sBack2 = ImageIO.read(getClass().getResourceAsStream("/player/Guy_back_still_2.png"));
 			
-			sRight1 = ImageIO.read(getClass().getResourceAsStream("/player/Guy_right_still_1.png"));
-			sRight2 = ImageIO.read(getClass().getResourceAsStream("/player/Guy_right_still_2.png"));
+			// sRight1 = ImageIO.read(getClass().getResourceAsStream("/player/Guy_right_still_1.png"));
+			// sRight2 = ImageIO.read(getClass().getResourceAsStream("/player/Guy_right_still_2.png"));
 			
-			sLeft1 = ImageIO.read(getClass().getResourceAsStream("/player/Guy_left_still_1.png"));
-			sLeft2 = ImageIO.read(getClass().getResourceAsStream("/player/Guy_left_still_2.png"));
+			// sLeft1 = ImageIO.read(getClass().getResourceAsStream("/player/Guy_left_still_1.png"));
+			// sLeft2 = ImageIO.read(getClass().getResourceAsStream("/player/Guy_left_still_2.png"));
 			
 			
 		}
@@ -112,6 +116,14 @@ public class Player extends Entity{
 			//Check Tile collision
 			collisionOn = false;
 			gp.collDetect.detectTile(this);
+
+			//Check Object collision
+			int objIndex = gp.collDetect.checkObject(this, true);
+			//System.out.println(objIndex);
+			// We handle the interaction in diff method
+			if (objIndex != 999) {
+				interactObject(objIndex);
+			}
 			
 			//if collision is false player can move
 			if(collisionOn == false) {
@@ -165,9 +177,28 @@ public class Player extends Entity{
 		 * 
 		 * else if(spriteNumber == 2) { spriteNumber = 1; } spriteCounter = 0; }
 		 */
-			
-		
 	}
+
+	public void interactObject(int objIndex) {
+		if(gp.obj[objIndex].pickUpable == true) {
+			if(gp.obj[objIndex].name == "Key") {
+				hasKey++;
+				System.out.println("Keys = " + hasKey);
+			}
+			gp.obj[objIndex] = null;
+		}
+
+		else if(gp.obj[objIndex].unlockable == true) {
+			if(gp.obj[objIndex].name == "Door") {
+				if(hasKey != 0) {
+					gp.obj[objIndex] = null;
+					hasKey--;
+					System.out.println("Keys = " + hasKey);
+				}
+			}
+		}
+	}
+
 	
 	//updates frame every second
 	public void draw(Graphics2D g2) {
